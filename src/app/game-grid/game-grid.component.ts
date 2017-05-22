@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { GameService } from '../game.service';
+import { BotService } from '../bot.service';
 
 enum Direction {
   Up = 1,
@@ -12,7 +13,7 @@ enum Direction {
   selector: 'app-game-grid',
   templateUrl: './game-grid.component.html',
   styleUrls: ['./game-grid.component.css'],
-  // providers: [GameService]
+   providers: [BotService]
 })
 export class GameGridComponent implements OnInit {
   currentPlayer: number = 1;
@@ -22,7 +23,7 @@ export class GameGridComponent implements OnInit {
   @Input() currentMode: number;
   @Output() onChosenMode = new EventEmitter<boolean>();
 
-  constructor(private gameService: GameService) { }
+  constructor(private gameService: GameService,private botService: BotService) { }
 
   ngOnInit() {
     this.initGrid();
@@ -57,9 +58,9 @@ export class GameGridComponent implements OnInit {
       }
     } else {
       if (this.currentMode === 1 && this.currentPlayer === 1) {
-        this.gameResult = "win :D";
+        this.gameResult = "win";
       } else {
-        this.gameResult = "lose D:";
+        this.gameResult = "lose";
       }
     }
 
@@ -68,7 +69,7 @@ export class GameGridComponent implements OnInit {
   aiPlayerPlaceOn() {
     let grid = this.gameService.grid;
     setTimeout(() => {
-      let aiChoice = this.gameService.maximizePlay(grid, 4);
+      let aiChoice = this.botService.maximizePlay(grid, 4);
       let placed = this.addToGrid(aiChoice[0]);
       if (placed === true) {
         this.checkGameStatus();
@@ -78,7 +79,7 @@ export class GameGridComponent implements OnInit {
     }, 500);
   }
   aiReplaceOn() {
-    let aiChoice = this.gameService.brainlessPlay();
+    let aiChoice = this.botService.brainlessPlay();
     let placed = this.addToGrid(aiChoice);
     if (placed === false) {
       return this.aiReplaceOn();
