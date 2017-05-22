@@ -57,9 +57,9 @@ export class GameGridComponent implements OnInit {
       }
     } else {
       if (this.currentMode === 1 && this.currentPlayer === 1) {
-        this.gameResult = "win";
+        this.gameResult = "win :D";
       } else {
-        this.gameResult = "lose";
+        this.gameResult = "lose D:";
       }
     }
 
@@ -189,8 +189,19 @@ export class GameGridComponent implements OnInit {
     }
   }
 
-  resetGame() {
+  leaveGame() {
     this.gameService.resetGrid();
     this.onChosenMode.emit(false);
+  }
+  replayGame() {
+    this.resetGame();
+  }
+  resetGame() {
+    this.gameService.resetGrid();
+    this.initGrid();
+    this.currentPlayer = 1;
+    this.gameOver = false;
+    this.gridFull = false;
+    this.gameResult = '';
   }
 }

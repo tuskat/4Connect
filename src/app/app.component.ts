@@ -14,7 +14,7 @@ enum Mode {
   providers: [GameService]
 })
 export class AppComponent {
-  title: string = 'Four Connect';
+  title: string = 'Connect Four';
   gameStarted: boolean = false;
   gameMode: number = Mode.Solo;
   constructor(private gameService: GameService) { }

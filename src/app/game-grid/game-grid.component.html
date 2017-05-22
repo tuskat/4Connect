@@ -23,5 +23,10 @@
   <div *ngIf="gridFull">
     <p>Draw</p>
   </div>
-  <button (click)="resetGame()">Replay</button>
+  <button (click)="replayGame()">Replay</button>
+  <button (click)="leaveGame()">Go Back to menu</button>
+</div>
+
+<div class="game-dismiss">
+  <button (click)="leaveGame()">X</button>
 </div>
