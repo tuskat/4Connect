@@ -31,13 +31,16 @@ export class GameGridComponent implements OnInit {
     this.gameService.initGrid();
   }
   playerPlaceOn(i) {
-    if (this.currentMode === 1 && this.currentPlayer === 1
+    if (this.currentMode === 1
+      && this.currentPlayer === 1
       || this.currentMode === 2) {
       let validAction = this.addToGrid(i);
       if (validAction) {
         this.checkGameStatus();
       }
-      if (this.currentMode === 1 && this.gameOver === false) {
+      if (this.currentMode === 1
+        && this.currentPlayer === 2
+        && this.gameOver === false) {
         this.aiPlayerPlaceOn();
       }
     }
@@ -65,30 +68,29 @@ export class GameGridComponent implements OnInit {
   aiPlayerPlaceOn() {
     let grid = this.gameService.grid;
     setTimeout(() => {
-      let aiChoice = this.gameService.brainlessPlay();
-      let placed = this.addToGrid(aiChoice);
+      let aiChoice = this.gameService.maximizePlay(grid, 4);
+      let placed = this.addToGrid(aiChoice[0]);
       if (placed === true) {
         this.checkGameStatus();
       } else {
         this.aiReplaceOn();
       }
-
-    }, 1000);
+    }, 500);
   }
   aiReplaceOn() {
     let aiChoice = this.gameService.brainlessPlay();
     let placed = this.addToGrid(aiChoice);
     if (placed === false) {
-      return this.aiPlayerPlaceOn();
+      return this.aiReplaceOn();
     } else {
-      return;
+      return this.checkGameStatus();
     }
 
   }
 
   playerHasWon() {
     let directions = [Direction.Right, Direction.Up, Direction.DiagonalUp, Direction.DiagonalDown];
-    var hasWon = false;
+    let hasWon = false;
     let grid = this.gameService.grid;
 
     directions.forEach(direction => {
@@ -162,44 +164,33 @@ export class GameGridComponent implements OnInit {
 
   addToGrid(index) {
     let added = false;
-
     let grid = this.gameService.grid;
-    let column = null;
-
-    if (index < grid.length) {
-      column = grid[index];
-    }
-    for (let i = (column.length - 1); i >= 0; i--) {
-      if (column[i] === 0) {
-        column[i] = this.currentPlayer;
-        added = true;
-        break;
+    if (grid !== null) {
+      let column = null;
+      if (index < grid.length) {
+        column = grid[index];
+      }
+      for (let i = (column.length - 1); i >= 0; i--) {
+        if (column[i] === 0) {
+          column[i] = this.currentPlayer;
+          added = true;
+          break;
+        }
       }
     }
     return added;
   }
 
   isGridFull() {
-    let full = true;
-    let grid = this.gameService.grid;
-
-    for (let i = 0; i != grid.length; i++) {
-      for (let j = 0; j != grid[i].length; j++) {
-        if (grid[i][j] === 0) {
-          full = false;
-          break;
-        }
-      }
-    }
+    let full = this.gameService.isGridFull(this.gameService.grid);
     if (full === true) {
       this.gridFull = true;
       this.gameOver = true;
     }
-    
   }
 
-    resetGame() {
-      this.gameService.resetGrid();
-      this.onChosenMode.emit(false);
-    }
+  resetGame() {
+    this.gameService.resetGrid();
+    this.onChosenMode.emit(false);
   }
+}
