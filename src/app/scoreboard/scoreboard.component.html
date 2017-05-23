@@ -1,0 +1,11 @@
+<div class="game-score">
+  <div class="left">
+    <p>P1</p>
+    <h2>{{playerScore[0]}}</h2>
+  </div>
+  <div class="right">
+    <p>{{opponent}}</p>
+    <h2 *ngIf="currentMode===2">{{playerScore[1]}}</h2>
+    <h2 *ngIf="currentMode===1">{{computerScore}}</h2>
+  </div>
+</div>

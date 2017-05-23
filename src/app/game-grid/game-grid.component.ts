@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { GameService } from '../game.service';
 import { BotService } from '../bot.service';
+import { ScoreboardComponent } from '../scoreboard/scoreboard.component';
 
 enum Direction {
   Up = 1,
@@ -13,22 +14,25 @@ enum Direction {
   selector: 'app-game-grid',
   templateUrl: './game-grid.component.html',
   styleUrls: ['./game-grid.component.css'],
-   providers: [BotService]
+  providers: [BotService]
 })
 export class GameGridComponent implements OnInit {
   currentPlayer: number = 1;
   gameOver: boolean = false;
   gridFull: boolean = false;
   gameResult: string = '';
+  gameTime: number[] = [0, 0];
+  @ViewChild(ScoreboardComponent) private scoreBoard: ScoreboardComponent;
   @Input() currentMode: number;
   @Output() onChosenMode = new EventEmitter<boolean>();
 
-  constructor(private gameService: GameService,private botService: BotService) { }
+  constructor(private gameService: GameService, private botService: BotService) { }
 
   ngOnInit() {
     this.initGrid();
   }
   initGrid() {
+    this.scoreBoard.gameStart();
     this.gameService.initGrid();
   }
   playerPlaceOn(i) {
@@ -49,12 +53,13 @@ export class GameGridComponent implements OnInit {
   checkGameStatus() {
 
     this.playerHasWon();
-    this.isGridFull();
+
 
     if (this.gameOver === false) {
       this.currentPlayer++;
       if (this.currentPlayer > 2) {
         this.currentPlayer = 1;
+
       }
     } else {
       if (this.currentMode === 1 && this.currentPlayer === 1) {
@@ -62,7 +67,10 @@ export class GameGridComponent implements OnInit {
       } else {
         this.gameResult = "lose";
       }
+      this.gameTime[0] = this.scoreBoard.gameEnded();
+      this.gameTime[1] = Math.round((this.gameTime[0] % 60) / 60);
     }
+    this.isGridFull();
 
   }
 
@@ -100,6 +108,8 @@ export class GameGridComponent implements OnInit {
           for (let j = 0; j != grid[i].length; j++) {
             hasWon = this.checkIfWinAt(i, j, direction, this.currentPlayer, grid);
             if (hasWon) {
+              this.scoreBoard.playerWon(this.currentPlayer);
+           
               this.gameOver = true;
               break;
             }
@@ -204,5 +214,6 @@ export class GameGridComponent implements OnInit {
     this.gameOver = false;
     this.gridFull = false;
     this.gameResult = '';
+ 
   }
 }

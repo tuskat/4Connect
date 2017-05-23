@@ -6,12 +6,14 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { GameGridComponent } from './game-grid/game-grid.component';
 import { MenuComponent } from './menu/menu.component';
+import { ScoreboardComponent } from './scoreboard/scoreboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GameGridComponent,
-    MenuComponent
+    MenuComponent,
+    ScoreboardComponent
   ],
   imports: [
     BrowserModule,

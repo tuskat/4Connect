@@ -1,4 +1,5 @@
-<div class="game-window">
+<div class="game-window animated fadeInDown">
+<app-scoreboard [currentMode]="currentMode"></app-scoreboard>
   <div class="game-cursors">
     <div class="game-cursor-item" *ngFor="let item of gameService.grid; let i = index">
       <div *ngIf="currentMode === 1 && currentPlayer === 2" class="computer-overlay animated fadeIn">
@@ -19,6 +20,7 @@
   <div *ngIf="!gridFull">
     <p *ngIf="currentMode === 1">You {{gameResult}}</p>
     <p *ngIf="currentMode === 2">Player {{currentPlayer}} has won</p>
+    <p> Round Time : {{gameTime[1]}} min {{gameTime[0]}} secs</p>
   </div>
   <div *ngIf="gridFull">
     <p>Draw</p>

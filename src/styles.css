@@ -3,10 +3,17 @@
     font-family: 'Biko';
     src: url(fonts/Biko_Regular.otf);
 }
+html {
+    height:100%;
+    width:100%;
+}
 body {
 font-family: 'Biko';
 min-width:320px;
+background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
 margin:0;
+height:100%;
+overflow: hidden;
 }
 footer div {
     position:absolute;
@@ -20,7 +27,12 @@ h1 {
    	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
     text-shadow: 4px 3px 0px #fff, 9px 8px 0px rgba(0,0,0,0.15);
+    transition:200ms all ease-in-out;
 }
+.in-game {
+    font-size:30px;
+}
+
 button {
     outline:none;
     background:none;
@@ -95,8 +107,42 @@ justify-content: space-around;
  height:75px;
  margin: 10px 0; 
 }
-@media screen and (max-width: 480px)
+.game-score {
+    max-width: 640px;
+    width:100%;
+     position:absolute;
+    top:-80px;
+    min-width:320px;
+    margin:0 auto;
+}
+.game-score div {
+    display:inline-block;
+    width:calc(50% - 2px);
+  
+ text-align: center;
+  box-sizing: border-box;
+}
+
+.game-score h2 {
+   font-size:30px;
+   margin:0.5em 0;
+}
+.game-score p {
+    margin:0.5em 0;
+    font-size:16px;
+}
+
+@media screen and (max-width: 530px)
 {
+    .game-score .left {
+        text-align: left;
+        padding-left:30px;
+       
+    }
+    .game-score .right {
+        text-align: right;
+        padding-right:30px;
+    }
  .game-cursor-item,.game-item {
  width:40px;
  height:40px;
@@ -175,6 +221,10 @@ background:	#ff96ac;
 .game-result button:hover {
     border-color:#6f96dc;
     color:#6f96dc;
+}
+
+.game-window {
+    position:relative;
 }
 /*
 .game-column {
