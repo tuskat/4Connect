@@ -67,8 +67,8 @@ export class GameGridComponent implements OnInit {
       } else {
         this.gameResult = "lose";
       }
-      this.gameTime[0] = this.scoreBoard.gameEnded();
-      this.gameTime[1] = Math.round((this.gameTime[0] % 60) / 60);
+      this.gameTime[0] = Math.abs(this.scoreBoard.gameEnded());
+      this.gameTime[1] = Math.abs(Math.round(((this.gameTime[0] - 60) % 60) / 60));
     }
     this.isGridFull();
 
@@ -109,7 +109,7 @@ export class GameGridComponent implements OnInit {
             hasWon = this.checkIfWinAt(i, j, direction, this.currentPlayer, grid);
             if (hasWon) {
               this.scoreBoard.playerWon(this.currentPlayer);
-           
+
               this.gameOver = true;
               break;
             }
@@ -214,6 +214,6 @@ export class GameGridComponent implements OnInit {
     this.gameOver = false;
     this.gridFull = false;
     this.gameResult = '';
- 
+
   }
 }
